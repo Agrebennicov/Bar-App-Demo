@@ -6,12 +6,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.jetpackdemo.ui.dashboard.DashboardScreen
+import com.example.jetpackdemo.ui.search.SearchScreen
 import com.example.jetpackdemo.ui.splash.SplashScreen
 
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
+    searchValue: String,
 ) {
     val actions = remember(navController) { NavActions(navController) }
 
@@ -30,6 +32,11 @@ fun NavGraph(
 
         composable(Screen.DRINKS_LIST) {
             DashboardScreen()
+        }
+        composable(Screen.DRINKS_SEARCH) {
+            SearchScreen(searchValue = searchValue, onDrinkClicked = { id ->
+
+            })
         }
     }
 }

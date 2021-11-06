@@ -2,37 +2,37 @@ package com.example.jetpackdemo.pojo
 
 import com.google.gson.annotations.SerializedName
 
-enum class DrinkCategory {
+enum class DrinkCategory(val categoryName: String) {
     @SerializedName("Cocktail")
-    COCKTAIL,
+    COCKTAIL("Cocktail"),
 
     @SerializedName("Shot")
-    SHOT,
+    SHOT("Shot"),
 
     @SerializedName("Homemade Liqueur")
-    HOMEMADE_LIQUEUR,
+    HOMEMADE_LIQUEUR("Homemade Liqueur"),
 
     @SerializedName("Punch / Party Drink")
-    PARTY_DRINK,
+    PARTY_DRINK("Punch / Party Drink"),
 
     @SerializedName("Ordinary Drink")
-    ORDINARY_DRINK,
+    ORDINARY_DRINK("Ordinary Drink"),
 
     @SerializedName("BEER")
-    BEER,
+    BEER("BEER"),
 
     @SerializedName("Milk / Float / Shake")
-    MILK_SHAKE,
+    MILK_SHAKE("Milk / Float / Shake"),
 
     @SerializedName("Cocoa")
-    COCOA,
+    COCOA("Cocoa"),
 
     @SerializedName("Coffee / Tea")
-    COFFEE_TEA,
+    COFFEE_TEA("Coffee / Tea"),
 
     @SerializedName("Soft Drink / Soda")
-    SOFT_DRINK,
+    SOFT_DRINK("Soft Drink / Soda"),
 
     @SerializedName("Other/Unknown")
-    OTHER;
+    OTHER("Other/Unknown");
 }

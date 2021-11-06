@@ -7,6 +7,10 @@ class NavActions(private val navController: NavHostController) {
     fun openDrinksList() {
         navController.navigate(Screen.DRINKS_LIST)
     }
+
+    fun openSearch() {
+        navController.navigate(Screen.DRINKS_SEARCH)
+    }
 }
 
 object Screen {

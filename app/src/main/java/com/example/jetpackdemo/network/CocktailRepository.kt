@@ -8,8 +8,9 @@ class CocktailRepository @Inject constructor(private val cocktailService: Cockta
 
     suspend fun search(query: String): Result<List<Drink>> = kotlin.runCatching {
         val result = cocktailService.search(query)
-        return if (!result.drinks.isNullOrEmpty()) {
-            Result.success(result.drinks)
+        val drinks = result.body()?.drinks
+        return if (!drinks.isNullOrEmpty()) {
+            Result.success(drinks)
         } else {
             Result.success(emptyList())
         }
