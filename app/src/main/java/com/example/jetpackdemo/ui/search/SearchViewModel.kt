@@ -19,7 +19,10 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             cocktailRepository.search(searchValue)
                 .onSuccess {
-                    uiState.value = SearchState.Loaded(it)
+                    if (it.isEmpty())
+                        uiState.value = SearchState.Empty
+                    else
+                        uiState.value = SearchState.Loaded(it)
                 }
                 .onFailure {
                     uiState.value = SearchState.Empty

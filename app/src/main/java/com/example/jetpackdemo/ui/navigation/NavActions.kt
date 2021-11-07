@@ -11,6 +11,10 @@ class NavActions(private val navController: NavHostController) {
     fun openSearch() {
         navController.navigate(Screen.DRINKS_SEARCH)
     }
+
+    fun openDetails(id: Long) {
+        navController.navigate("${Screen.DRINK_DETAILS}/$id")
+    }
 }
 
 object Screen {

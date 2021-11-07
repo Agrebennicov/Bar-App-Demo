@@ -2,10 +2,13 @@ package com.example.jetpackdemo.pojo
 
 import com.google.gson.annotations.SerializedName
 
-enum class AlcoholicType {
+enum class AlcoholicType(val typeName: String) {
     @SerializedName("Non alcoholic")
-    NON_ALCOHOLIC,
+    NON_ALCOHOLIC("Non alcoholic"),
 
     @SerializedName("Alcoholic")
-    ALCOHOLIC();
+    ALCOHOLIC("Alcoholic"),
+
+    @SerializedName("Optional alcohol")
+    OPTIONAL_ALCOHOL("Optional alcohol");
 }

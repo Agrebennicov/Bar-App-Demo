@@ -12,12 +12,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.example.jetpackdemo.R
 import com.example.jetpackdemo.ui.theme.DrinkTheme
 
 @Composable
@@ -37,10 +41,25 @@ fun SearchScreen(onDrinkClicked: (Long) -> Unit, searchValue: String) {
         Card(
             modifier = Modifier
                 .fillMaxSize(),
-            shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)
+            shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
         ) {
             when (uiState) {
                 is SearchViewModel.SearchState.Empty -> {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        Image(
+                            alignment = Alignment.Center,
+                            modifier = Modifier.size(94.dp, 150.dp),
+                            painter = painterResource(R.drawable.cocktail),
+                            contentDescription = "Empty cocktail list"
+                        )
+                        Text(text = "Sorry\nNo cocktails were found", textAlign = TextAlign.Center)
+                    }
                 }
                 is SearchViewModel.SearchState.Loaded -> {
                     val drinks = (uiState as SearchViewModel.SearchState.Loaded).drinks

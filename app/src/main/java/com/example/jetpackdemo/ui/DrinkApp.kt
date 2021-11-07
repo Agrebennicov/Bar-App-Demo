@@ -91,6 +91,7 @@ fun DrinksTopAppBar(
                     shape = CircleShape,
                     modifier = Modifier.fillMaxWidth(),
                     value = searchValue,
+                    placeholder = { Text(text = "Search", color = DrinkTheme.colors.onPrimary) },
                     onValueChange = {
                         searchValue = it
                         onSearchValueChanged(it)
