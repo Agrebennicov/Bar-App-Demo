@@ -25,7 +25,7 @@ object DrinkTheme {
 
 @SuppressLint("ConflictingOnColor")
 val colorPalette = lightColors(
-    primary = Color(0xFFFFEDD3),
+    primary = Color(0xFFFFF0D7),
     primaryVariant = Color(0xFF3E2723),
     secondary = Color(0xFFFF5722),
     background = Color(0xFFE8F2FB),
