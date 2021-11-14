@@ -35,7 +35,7 @@ class CocktailRepository @Inject constructor(private val cocktailService: Cockta
     }
 
     suspend fun getByCategory(category: DrinkCategory): Result<List<Drink>> = kotlin.runCatching {
-        val result = cocktailService.getByCategory(category)
+        val result = cocktailService.getByCategory(category.categoryName)
         return if (!result.drinks.isNullOrEmpty()) {
             Result.success(result.drinks)
         } else {

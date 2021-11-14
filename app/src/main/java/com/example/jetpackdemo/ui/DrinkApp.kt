@@ -1,5 +1,6 @@
 package com.example.jetpackdemo.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -22,6 +24,7 @@ import com.example.jetpackdemo.ui.navigation.NavGraph
 import com.example.jetpackdemo.ui.navigation.Screen
 import com.example.jetpackdemo.ui.theme.DrinkTheme
 
+@ExperimentalAnimationApi
 @Composable
 fun DrinkApp() {
     DrinkTheme {
@@ -57,14 +60,16 @@ fun DrinksTopAppBar(
     when (currentRoute) {
         Screen.DRINKS_LIST -> TopAppBar(elevation = 0.dp) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_menu),
-                    contentDescription = "Menu"
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = "Demo App",
+                    textAlign = TextAlign.Center,
                 )
-                Text(text = "Demo App")
                 Image(
                     modifier = Modifier.clickable { NavActions(navController).openSearch() },
                     painter = painterResource(R.drawable.ic_search),

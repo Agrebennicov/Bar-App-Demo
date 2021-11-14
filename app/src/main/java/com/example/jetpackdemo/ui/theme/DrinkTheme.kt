@@ -27,13 +27,13 @@ object DrinkTheme {
 val colorPalette = lightColors(
     primary = Color(0xFFFFF0D7),
     primaryVariant = Color(0xFF3E2723),
-    secondary = Color(0xFFFF5722),
-    background = Color(0xFFE8F2FB),
-    surface = Color(0xFFE8F2FB),
+    secondary = Color(0xFFE5863A),
+    background = Color(0xFFE9E2D6),
+    surface = Color(0xFFFFF0D7),
     error = Color(0xFFCE1F3E),
-    onPrimary = Color(0xFFFF5722),
-    onSecondary = DrinkColors.White,
-    onBackground = Color(0xFF5DB0E6),
+    onPrimary = Color(0xFFE5863A),
+    onSecondary =  Color(0xFFE5863A),
+    onBackground = Color(0xFFC05703),
     onSurface = Color(0xFFE5E5E5),
-    onError = DrinkColors.White
+    onError = Color(0xffffffff)
 )

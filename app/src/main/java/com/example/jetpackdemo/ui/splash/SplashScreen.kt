@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -115,7 +116,7 @@ fun SplashScreen(onDone: () -> Unit) {
             State.START -> animationTargetState.value = State.SERVE
             State.SERVE -> animationTargetState.value = State.CLINK
             State.CLINK -> animationTargetState.value = State.END
-            State.END -> onDone()
+            State.END -> LaunchedEffect(key1 = Unit, block = { onDone()})
         }
     }
 }

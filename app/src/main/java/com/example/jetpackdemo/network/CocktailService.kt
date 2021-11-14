@@ -18,7 +18,7 @@ interface CocktailService {
     suspend fun getPopular(): DrinkResponse
 
     @GET("filter.php")
-    suspend fun getByCategory(@Query("c") category: DrinkCategory): DrinkResponse
+    suspend fun getByCategory(@Query("c") category: String): DrinkResponse
 
     @GET("lookup.php")
     suspend fun getDetails(@Query("i") id: Long): DrinkResponse

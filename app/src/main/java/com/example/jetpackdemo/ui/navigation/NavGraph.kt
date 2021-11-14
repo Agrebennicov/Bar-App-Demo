@@ -1,5 +1,6 @@
 package com.example.jetpackdemo.ui.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
@@ -13,6 +14,7 @@ import com.example.jetpackdemo.ui.search.SearchScreen
 import com.example.jetpackdemo.ui.splash.SplashScreen
 
 
+@ExperimentalAnimationApi
 @Composable
 fun NavGraph(
     navController: NavHostController,
@@ -34,7 +36,11 @@ fun NavGraph(
         }
 
         composable(Screen.DRINKS_LIST) {
-            DashboardScreen()
+            DashboardScreen(
+                navigateDrinkDetails = {
+                    actions.openDetails(it)
+                }
+            )
         }
         composable(Screen.DRINKS_SEARCH) {
             SearchScreen(searchValue = searchValue, onDrinkClicked = { id ->
