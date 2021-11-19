@@ -302,10 +302,7 @@ fun CategoryChipPreview() {
 @Composable
 fun DrinkItemPreview() {
     DrinkItem(
-        drink = Drink(
-            name = "Drink Name",
-            imageUrl = "https://developer.android.com/images/jetpack/compose/tooling-simple-preview.png"
-        ),
+        drink = Drink(name = "Drink Name"),
         onDrinkSelected = { }
     )
 }
@@ -314,10 +311,7 @@ fun DrinkItemPreview() {
 @Composable
 fun DrinkItemHorizontalPreview() {
     DrinkItem(
-        drink = Drink(
-            name = "Drink Name",
-            imageUrl = "https://developer.android.com/images/jetpack/compose/tooling-simple-preview.png"
-        ),
+        drink = Drink(name = "Drink Name"),
         onDrinkSelected = { },
         isHorizontalAlignment = true
     )
