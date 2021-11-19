@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.jetpackdemo.ui.dashboard.DashboardScreen
+import com.example.jetpackdemo.ui.drinks.DrinksScreen
 import com.example.jetpackdemo.ui.details.DetailsScreen
 import com.example.jetpackdemo.ui.search.SearchScreen
 import com.example.jetpackdemo.ui.splash.SplashScreen
@@ -31,12 +31,13 @@ fun NavGraph(
             SplashScreen(
                 onDone = {
                     actions.openDrinksList()
+
                 }
             )
         }
 
         composable(Screen.DRINKS_LIST) {
-            DashboardScreen(
+            DrinksScreen(
                 navigateDrinkDetails = {
                     actions.openDetails(it)
                 }

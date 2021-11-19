@@ -5,7 +5,9 @@ import androidx.navigation.NavHostController
 class NavActions(private val navController: NavHostController) {
 
     fun openDrinksList() {
-        navController.navigate(Screen.DRINKS_LIST)
+        navController.navigate(Screen.DRINKS_LIST) {
+            popUpTo(Screen.SPLASH) { inclusive = true }
+        }
     }
 
     fun openSearch() {

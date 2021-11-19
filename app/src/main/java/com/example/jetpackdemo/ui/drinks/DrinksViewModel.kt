@@ -1,4 +1,4 @@
-package com.example.jetpackdemo.ui.dashboard
+package com.example.jetpackdemo.ui.drinks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,12 +12,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DashboardViewModel @Inject constructor(
+class DrinksViewModel @Inject constructor(
     private val cocktailRepository: CocktailRepository
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<DashboardState> = MutableStateFlow(DashboardState.Loading)
-     val uiState: StateFlow<DashboardState> = _uiState
+    private val _uiState: MutableStateFlow<DrinksState> = MutableStateFlow(DrinksState.Loading)
+    val uiState: StateFlow<DrinksState> = _uiState
 
     init {
         loadData()
@@ -27,17 +27,21 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             val categories = DrinkCategory.values().asList()
             val defaultCategory = categories.first()
-            val drinksByCategories = cocktailRepository.getByCategory(defaultCategory)
-            val randomDrink = cocktailRepository.getRandom()
-            val popularDrinks = cocktailRepository.getPopular()
+            val drinksByCategories = cocktailRepository.getByCategory(defaultCategory).getOrNull()
+            val randomDrink = cocktailRepository.getRandom().getOrNull()
+            val popularDrinks = cocktailRepository.getPopular().getOrNull()
 
-            _uiState.value = DashboardState.Loaded(
-                categories = categories,
-                selectedCategory = defaultCategory,
-                drinksByCategory = drinksByCategories.getOrDefault(listOf()),
-                randomDrink = randomDrink.getOrNull(),
-                popularDrinks = popularDrinks.getOrDefault(listOf())
-            )
+            if (drinksByCategories != null && randomDrink != null && popularDrinks != null) {
+                _uiState.value = DrinksState.Loaded(
+                    categories = categories,
+                    selectedCategory = defaultCategory,
+                    drinksByCategory = drinksByCategories,
+                    randomDrink = randomDrink,
+                    popularDrinks = popularDrinks
+                )
+            } else {
+                _uiState.value = DrinksState.Error
+            }
         }
     }
 
@@ -45,7 +49,7 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             val drinksByCategories = cocktailRepository.getByCategory(category = category)
 
-            (_uiState.value as? DashboardState.Loaded)?.let {
+            (_uiState.value as? DrinksState.Loaded)?.let {
                 _uiState.value = it.copy(
                     selectedCategory = category,
                     drinksByCategory = drinksByCategories.getOrDefault(
@@ -56,14 +60,15 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    sealed class DashboardState {
-        object Loading : DashboardState()
+    sealed class DrinksState {
+        object Loading : DrinksState()
+        object Error : DrinksState()
         data class Loaded(
             val categories: List<DrinkCategory>,
             val selectedCategory: DrinkCategory,
             val drinksByCategory: List<Drink>,
             val popularDrinks: List<Drink>,
-            val randomDrink: Drink?
-        ) : DashboardState()
+            val randomDrink: Drink
+        ) : DrinksState()
     }
 }

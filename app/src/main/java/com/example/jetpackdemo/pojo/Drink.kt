@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class Drink(
     @SerializedName("idDrink")
-    val id: Long,
+    val id: Long = 0,
     @SerializedName("strDrink")
-    val name: String,
+    val name: String = "",
     @SerializedName("strDrinkThumb")
-    val imageUrl: String,
+    val imageUrl: String = "",
     @SerializedName("strTags")
     val tags: String? = "",
     @SerializedName("strCategory")

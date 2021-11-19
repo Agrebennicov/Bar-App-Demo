@@ -27,27 +27,27 @@ import com.example.jetpackdemo.ui.theme.DrinkTheme
 @ExperimentalAnimationApi
 @Composable
 fun DrinkApp() {
-    DrinkTheme {
-        val navController = rememberNavController()
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
-        var searchValue by remember { mutableStateOf("") }
-        Scaffold(
-            backgroundColor = DrinkTheme.colors.background,
-            topBar = {
-                DrinksTopAppBar(
-                    navController = navController,
-                    currentRoute = currentDestination?.route,
-                    onSearchValueChanged = {
-                        searchValue = it
-                    })
-            }
-        ) {
-            NavGraph(
+
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    var searchValue by remember { mutableStateOf("") }
+
+    Scaffold(
+        backgroundColor = DrinkTheme.colors.background,
+        topBar = {
+            DrinksTopAppBar(
                 navController = navController,
-                searchValue = searchValue
-            )
+                currentRoute = currentDestination?.route,
+                onSearchValueChanged = {
+                    searchValue = it
+                })
         }
+    ) {
+        NavGraph(
+            navController = navController,
+            searchValue = searchValue
+        )
     }
 }
 
