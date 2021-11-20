@@ -105,6 +105,7 @@ private fun DrinkIngredients(drink: Drink) {
     )
 
     Spacer(modifier = Modifier.height(10.dp))
+
     drink.ingredient1?.let { Text(text = drink.ingredient1) }
     drink.ingredient2?.let { Text(text = drink.ingredient2) }
     drink.ingredient3?.let { Text(text = drink.ingredient3) }

@@ -30,7 +30,7 @@ fun NavGraph(
     val actions = remember(navController) { NavActions(navController) }
     NavHost(
         navController = navController,
-        startDestination = Screen.DRINKS_LIST
+        startDestination = Screen.SPLASH
     ) {
         composable(Screen.SPLASH) {
             SplashScreen(
@@ -60,7 +60,7 @@ fun NavGraph(
         composable(
             route = "${Screen.DRINK_DETAILS}/{id}",
             arguments = listOf(navArgument("id") { type = NavType.LongType })
-        ) { backStackEntry ->
+        ) {
             val viewModel = hiltViewModel<DetailsViewModel>()
             val uiState by viewModel.uiState.collectAsState()
             DetailsScreen(uiState) {
