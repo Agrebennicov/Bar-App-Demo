@@ -7,32 +7,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
+import com.example.jetpackdemo.pojo.AlcoholicType
+import com.example.jetpackdemo.pojo.Drink
+import com.example.jetpackdemo.pojo.DrinkCategory
+import com.example.jetpackdemo.ui.common.CircularLoading
 import com.example.jetpackdemo.ui.theme.DrinkTheme
 
 @Composable
-fun DetailsScreen(id: Long) {
-    val viewModel: DetailsViewModel = hiltViewModel()
-    LaunchedEffect(key1 = true) {
-        viewModel.getDetails(id)
-    }
+fun DetailsScreen(uiState: DetailsViewModel.DetailsState, onDrinkLoaded: (String) -> Unit) {
 
-    val uiState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier
             .background(DrinkTheme.colors.primary)
@@ -45,21 +41,14 @@ fun DetailsScreen(id: Long) {
             shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
         ) {
             when (uiState) {
-                is DetailsViewModel.DetailsState.Loading -> {
-                    Column(
-                        Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
+                is DetailsViewModel.DetailsState.Loading -> CircularLoading(Modifier.fillMaxSize())
+
                 is DetailsViewModel.DetailsState.Loaded -> {
-                    val drink = (uiState as DetailsViewModel.DetailsState.Loaded).drink
-                    Column(
-                        Modifier
-                            .fillMaxWidth()
-                    ) {
+                    val drink = uiState.drink
+                    LaunchedEffect(true) {
+                        onDrinkLoaded(drink.name)
+                    }
+                    Column(Modifier.fillMaxWidth()) {
                         Image(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -74,91 +63,161 @@ fun DetailsScreen(id: Long) {
                                 .fillMaxWidth()
                                 .padding(vertical = 16.dp, horizontal = 16.dp)
                         ) {
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceEvenly,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(
-                                        text = "Category",
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                    Text(
-                                        text = drink.category?.categoryName ?: "",
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 12.sp,
-                                    )
-                                }
-                                Divider(Modifier.height(30.dp).width(1.dp), color = DrinkTheme.colors.onBackground)
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(
-                                        text = "Glass",
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                    Text(
-                                        text = drink.glass ?: "", textAlign = TextAlign.Center,
-                                        fontSize = 12.sp,
-                                    )
-                                }
-                                Divider(Modifier.height(30.dp).width(1.dp), color = DrinkTheme.colors.onBackground)
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(
-                                        text = "Alcoholic",
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                    Text(
-                                        text = drink.alcoholicType?.typeName ?: "",
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 12.sp,
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Divider(color = DrinkTheme.colors.onSurface)
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = "Ingredients:",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
 
-                            Spacer(modifier = Modifier.height(10.dp))
-                            drink.ingredient1?.let { Text(text = drink.ingredient1) }
-                            drink.ingredient2?.let { Text(text = drink.ingredient2) }
-                            drink.ingredient3?.let { Text(text = drink.ingredient3) }
-                            drink.ingredient4?.let { Text(text = drink.ingredient4) }
-                            drink.ingredient5?.let { Text(text = drink.ingredient5) }
-                            drink.ingredient6?.let { Text(text = drink.ingredient6) }
-                            drink.ingredient7?.let { Text(text = drink.ingredient7) }
-                            drink.ingredient8?.let { Text(text = drink.ingredient8) }
-
-
+                            DrinkInfo(drink)
 
                             Spacer(modifier = Modifier.height(10.dp))
                             Divider(color = DrinkTheme.colors.onSurface)
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            DrinkIngredients(drink)
 
                             Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = "Instructions:",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+                            Divider(color = DrinkTheme.colors.onSurface)
                             Spacer(modifier = Modifier.height(10.dp))
-                            Text(text = drink.instructions ?: "")
+
+                            DrinkInstructions(drink.instructions ?: "")
                         }
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+private fun DrinkInstructions(instructions: String) {
+    Text(
+        text = "Instructions:",
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold
+    )
+    Spacer(modifier = Modifier.height(10.dp))
+    Text(text = instructions)
+}
+
+@Composable
+private fun DrinkIngredients(drink: Drink) {
+    Text(
+        text = "Ingredients:",
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+    drink.ingredient1?.let { Text(text = drink.ingredient1) }
+    drink.ingredient2?.let { Text(text = drink.ingredient2) }
+    drink.ingredient3?.let { Text(text = drink.ingredient3) }
+    drink.ingredient4?.let { Text(text = drink.ingredient4) }
+    drink.ingredient5?.let { Text(text = drink.ingredient5) }
+    drink.ingredient6?.let { Text(text = drink.ingredient6) }
+    drink.ingredient7?.let { Text(text = drink.ingredient7) }
+    drink.ingredient8?.let { Text(text = drink.ingredient8) }
+}
+
+@Composable
+private fun DrinkInfo(drink: Drink) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        LabelAndDescription(label = "Category", description = drink.category?.categoryName ?: "")
+
+        VerticalDivider()
+
+        LabelAndDescription(label = "Glass", description = drink.glass ?: "")
+
+        VerticalDivider()
+
+        LabelAndDescription(label = "Alcoholic", description = drink.alcoholicType?.typeName ?: "")
+    }
+}
+
+@Composable
+private fun LabelAndDescription(label: String, description: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = label,
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = description,
+            textAlign = TextAlign.Center,
+            fontSize = 12.sp,
+        )
+    }
+}
+
+@Composable
+private fun VerticalDivider() {
+    Divider(
+        Modifier
+            .height(30.dp)
+            .width(1.dp), color = DrinkTheme.colors.onBackground
+    )
+}
+
+@Preview
+@Composable
+fun DrinkInfoPreview() {
+    DrinkInfo(
+        drink = Drink(
+            category = DrinkCategory.COCKTAIL,
+            glass = "Highball glass",
+            alcoholicType = AlcoholicType.ALCOHOLIC
+        )
+    )
+}
+
+@Preview
+@Composable
+fun DrinkIngredientsPreview() {
+    Column {
+        DrinkIngredients(
+            drink = Drink(
+                ingredient1 = "Light rum",
+                ingredient2 = "Lime",
+                ingredient3 = "Sugar",
+                ingredient4 = "Mint",
+                ingredient5 = "Soda water",
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+fun DrinkInstructionsPreview() {
+    Column {
+        DrinkInstructions(instructions = "INSTRUCTIONS...")
+    }
+}
+
+@Preview
+@Composable
+fun DetailsScreenPreview() {
+    DetailsScreen(uiState = DetailsViewModel.DetailsState.Loaded(
+        Drink(
+            imageUrl = "https://www.thecocktaildb.com//images//media//drink//metwgh1606770327.jpg",
+            category = DrinkCategory.COCKTAIL,
+            glass = "Highball glass",
+            alcoholicType = AlcoholicType.ALCOHOLIC,
+            ingredient1 = "Light rum",
+            ingredient2 = "Lime",
+            ingredient3 = "Sugar",
+            ingredient4 = "Mint",
+            ingredient5 = "Soda water",
+            instructions = "Instructions..."
+        )
+    ), onDrinkLoaded = {})
+}
+
+@Preview
+@Composable
+fun DetailsScreenLoadingPreview() {
+    DetailsScreen(uiState = DetailsViewModel.DetailsState.Loading, onDrinkLoaded = {})
 }
