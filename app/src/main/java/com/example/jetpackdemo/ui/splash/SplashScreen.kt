@@ -27,7 +27,14 @@ import com.example.jetpackdemo.ui.theme.DrinkTheme
 
 private enum class State { START, SERVE, CLINK, END }
 
-private const val SERVE_ANIMATION_DURATION = 1000
+/**
+ * START - show one drink
+ * SERVE - slide in the other 2 drinks
+ * CLINK - clink the drinks
+ * END - navigate to the next screen
+ * */
+
+private const val SERVE_ANIMATION_DURATION = 2000
 private const val CLINK_ANIMATION_DURATION = 600
 private const val FADE_OUT_ANIMATION_DURATION = 1000
 
