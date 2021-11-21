@@ -52,9 +52,7 @@ class DrinksViewModel @Inject constructor(
             (_uiState.value as? DrinksState.Loaded)?.let {
                 _uiState.value = it.copy(
                     selectedCategory = category,
-                    drinksByCategory = drinksByCategories.getOrDefault(
-                        listOf()
-                    )
+                    drinksByCategory = drinksByCategories.getOrDefault(listOf())
                 )
             }
         }
