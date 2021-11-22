@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">JetpackDemo</string>
+    <string name="browse_categories">Browse Categories</string>
+    <string name="random_cocktail">Random Cocktail</string>
+    <string name="most_popular">Most Popular</string>
+
 </resources>
