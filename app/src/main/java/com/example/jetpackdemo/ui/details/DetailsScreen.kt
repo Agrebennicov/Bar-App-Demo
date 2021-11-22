@@ -14,9 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,24 +32,17 @@ fun DetailsScreen(uiState: DetailsViewModel.DetailsState, onDrinkLoaded: (String
 
     Surface {
         Card {
-            Column {
-            when (uiState) {
-                is DetailsViewModel.DetailsState.Loading -> CircularLoading(Modifier.fillMaxSize())
+            Column(Modifier.background(Color(0xFFE8F2FB))) {
+                when (uiState) {
+                    is DetailsViewModel.DetailsState.Loading -> CircularLoading(Modifier.fillMaxSize())
 
-                is DetailsViewModel.DetailsState.Loaded -> {
-                    val drink = uiState.drink
-                    LaunchedEffect(true) {
-                        onDrinkLoaded(drink.name)
-                    }
-                        Image(
-                            painter = rememberImagePainter(data = drink.imageUrl),
-                            contentDescription = drink.name
-                        )
-                            DrinkInfo(drink)
+                    is DetailsViewModel.DetailsState.Loaded -> {
+                        val drink = uiState.drink
+                        LaunchedEffect(true) {
+                            onDrinkLoaded(drink.name)
+                        }
 
-                            DrinkIngredients(drink)
-
-                            DrinkInstructions(drink.instructions ?: "")
+                        DetailsContent(drink)
                     }
                 }
             }
@@ -58,28 +51,51 @@ fun DetailsScreen(uiState: DetailsViewModel.DetailsState, onDrinkLoaded: (String
 }
 
 @Composable
+private fun DetailsContent(drink: Drink) {
+    Image(
+        painter = rememberImagePainter(data = drink.imageUrl),
+        contentDescription = drink.name
+    )
+    Column {
+        DrinkInfo(drink)
+
+        Divider(
+            color = Color(0xFFE1D5CF)
+        )
+
+        DrinkIngredients(drink)
+
+        Divider(
+            color = Color(0xFFE1D5CF)
+        )
+
+        DrinkInstructions(drink.instructions ?: "")
+    }
+}
+
+@Composable
 private fun DrinkInstructions(instructions: String) {
-    Text(
+    MyLabel(
         text = "Instructions:"
     )
 
-    Text(text = instructions)
+    MyDescription(text = instructions)
 }
 
 @Composable
 private fun DrinkIngredients(drink: Drink) {
-    Text(
+    MyLabel(
         text = "Ingredients:"
     )
 
-    drink.ingredient1?.let { Text(text = drink.ingredient1) }
-    drink.ingredient2?.let { Text(text = drink.ingredient2) }
-    drink.ingredient3?.let { Text(text = drink.ingredient3) }
-    drink.ingredient4?.let { Text(text = drink.ingredient4) }
-    drink.ingredient5?.let { Text(text = drink.ingredient5) }
-    drink.ingredient6?.let { Text(text = drink.ingredient6) }
-    drink.ingredient7?.let { Text(text = drink.ingredient7) }
-    drink.ingredient8?.let { Text(text = drink.ingredient8) }
+    drink.ingredient1?.let { MyDescription(text = drink.ingredient1) }
+    drink.ingredient2?.let { MyDescription(text = drink.ingredient2) }
+    drink.ingredient3?.let { MyDescription(text = drink.ingredient3) }
+    drink.ingredient4?.let { MyDescription(text = drink.ingredient4) }
+    drink.ingredient5?.let { MyDescription(text = drink.ingredient5) }
+    drink.ingredient6?.let { MyDescription(text = drink.ingredient6) }
+    drink.ingredient7?.let { MyDescription(text = drink.ingredient7) }
+    drink.ingredient8?.let { MyDescription(text = drink.ingredient8) }
 }
 
 @Composable
@@ -96,19 +112,32 @@ private fun DrinkInfo(drink: Drink) {
 @Composable
 private fun LabelAndDescription(label: String, description: String) {
     Column {
-        Text(
-            text = label,
-        )
+        MyLabel(text = label)
 
-        Text(
-            text = description,
-        )
+        MyDescription(text = description)
+
     }
 }
 
 @Composable
 private fun VerticalDivider() {
     Divider(color = DrinkTheme.colors.onBackground)
+}
+
+@Composable
+fun MyLabel(text: String) {
+    Text(
+        text = text,
+        color = Color(0xFF5DB0E6)
+    )
+}
+
+@Composable
+fun MyDescription(text: String) {
+    Text(
+        text = text,
+        color = Color(0xFF5DB0E6)
+    )
 }
 
 @Preview
