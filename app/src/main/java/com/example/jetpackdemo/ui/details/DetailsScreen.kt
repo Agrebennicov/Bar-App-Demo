@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,17 +30,9 @@ import com.example.jetpackdemo.ui.theme.DrinkTheme
 @Composable
 fun DetailsScreen(uiState: DetailsViewModel.DetailsState, onDrinkLoaded: (String) -> Unit) {
 
-    Column(
-        modifier = Modifier
-            .background(DrinkTheme.colors.primary)
-            .fillMaxSize()
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
-        ) {
+    Surface {
+        Card {
+            Column {
             when (uiState) {
                 is DetailsViewModel.DetailsState.Loading -> CircularLoading(Modifier.fillMaxSize())
 
@@ -48,36 +41,15 @@ fun DetailsScreen(uiState: DetailsViewModel.DetailsState, onDrinkLoaded: (String
                     LaunchedEffect(true) {
                         onDrinkLoaded(drink.name)
                     }
-                    Column(Modifier.fillMaxWidth()) {
                         Image(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1f),
-                            contentScale = ContentScale.FillWidth,
                             painter = rememberImagePainter(data = drink.imageUrl),
                             contentDescription = drink.name
                         )
-
-                        Column(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 16.dp, horizontal = 16.dp)
-                        ) {
-
                             DrinkInfo(drink)
-
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Divider(color = DrinkTheme.colors.onSurface)
-                            Spacer(modifier = Modifier.height(10.dp))
 
                             DrinkIngredients(drink)
 
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Divider(color = DrinkTheme.colors.onSurface)
-                            Spacer(modifier = Modifier.height(10.dp))
-
                             DrinkInstructions(drink.instructions ?: "")
-                        }
                     }
                 }
             }
@@ -88,23 +60,17 @@ fun DetailsScreen(uiState: DetailsViewModel.DetailsState, onDrinkLoaded: (String
 @Composable
 private fun DrinkInstructions(instructions: String) {
     Text(
-        text = "Instructions:",
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold
+        text = "Instructions:"
     )
-    Spacer(modifier = Modifier.height(10.dp))
+
     Text(text = instructions)
 }
 
 @Composable
 private fun DrinkIngredients(drink: Drink) {
     Text(
-        text = "Ingredients:",
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold
+        text = "Ingredients:"
     )
-
-    Spacer(modifier = Modifier.height(10.dp))
 
     drink.ingredient1?.let { Text(text = drink.ingredient1) }
     drink.ingredient2?.let { Text(text = drink.ingredient2) }
@@ -118,18 +84,10 @@ private fun DrinkIngredients(drink: Drink) {
 
 @Composable
 private fun DrinkInfo(drink: Drink) {
-    Row(
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row {
         LabelAndDescription(label = "Category", description = drink.category?.categoryName ?: "")
 
-        VerticalDivider()
-
         LabelAndDescription(label = "Glass", description = drink.glass ?: "")
-
-        VerticalDivider()
 
         LabelAndDescription(label = "Alcoholic", description = drink.alcoholicType?.typeName ?: "")
     }
@@ -137,29 +95,20 @@ private fun DrinkInfo(drink: Drink) {
 
 @Composable
 private fun LabelAndDescription(label: String, description: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column {
         Text(
             text = label,
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(10.dp))
+
         Text(
             text = description,
-            textAlign = TextAlign.Center,
-            fontSize = 12.sp,
         )
     }
 }
 
 @Composable
 private fun VerticalDivider() {
-    Divider(
-        Modifier
-            .height(30.dp)
-            .width(1.dp), color = DrinkTheme.colors.onBackground
-    )
+    Divider(color = DrinkTheme.colors.onBackground)
 }
 
 @Preview
