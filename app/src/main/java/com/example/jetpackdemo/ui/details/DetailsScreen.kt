@@ -32,7 +32,7 @@ fun DetailsScreen(uiState: DetailsViewModel.DetailsState, onDrinkLoaded: (String
 
     Surface {
         Card {
-            Column(Modifier.background(Color(0xFFE8F2FB))) {
+            Column {
                 when (uiState) {
                     is DetailsViewModel.DetailsState.Loading -> CircularLoading(Modifier.fillMaxSize())
 
@@ -127,16 +127,14 @@ private fun VerticalDivider() {
 @Composable
 fun MyLabel(text: String) {
     Text(
-        text = text,
-        color = Color(0xFF5DB0E6)
+        text = text
     )
 }
 
 @Composable
 fun MyDescription(text: String) {
     Text(
-        text = text,
-        color = Color(0xFF5DB0E6)
+        text = text
     )
 }
 

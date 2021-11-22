@@ -1,6 +1,9 @@
 package com.example.jetpackdemo.ui.search
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,32 +26,20 @@ import coil.transform.CircleCropTransformation
 import com.example.jetpackdemo.R
 import com.example.jetpackdemo.pojo.Drink
 import com.example.jetpackdemo.pojo.DrinkCategory
+import com.example.jetpackdemo.ui.details.MyDescription
+import com.example.jetpackdemo.ui.details.MyLabel
 import com.example.jetpackdemo.ui.theme.DrinkTheme
 
 @Composable
 fun SearchScreen(uiState: SearchViewModel.SearchState, onDrinkClicked: (Long) -> Unit) {
-    Column(
-        modifier = Modifier
-            .background(DrinkTheme.colors.primary)
-            .fillMaxSize()
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxSize(),
-            shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
-        ) {
+    Surface {
+        Card {
             when (uiState) {
                 is SearchViewModel.SearchState.Empty -> Placeholder()
 
                 is SearchViewModel.SearchState.Loaded -> {
                     val drinks = uiState.drinks
-                    LazyColumn(
-                        contentPadding = PaddingValues(
-                            horizontal = 16.dp,
-                            vertical = 26.dp
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
+                    LazyColumn {
                         items(drinks) { drink ->
                             SearchItem(drink) { onDrinkClicked(it) }
                         }
@@ -60,40 +52,26 @@ fun SearchScreen(uiState: SearchViewModel.SearchState, onDrinkClicked: (Long) ->
 
 @Composable
 private fun Placeholder() {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(top = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
+    Column {
         Image(
-            alignment = Alignment.Center,
-            modifier = Modifier.size(94.dp, 150.dp),
             painter = painterResource(R.drawable.cocktail),
             contentDescription = "Empty cocktail list"
         )
-        Text(text = "Sorry\nNo cocktails were found", textAlign = TextAlign.Center)
+        Text(text = "Sorry\nNo cocktails were found")
     }
 }
 
 @Composable
 private fun SearchItem(drink: Drink, onDrinkClicked: (Long) -> Unit) {
-    Column(Modifier.clickable {
-        onDrinkClicked(drink.id)
-    }) {
+    Column {
         Row {
             OutlinedRoundImage(drink.imageUrl, drink.name)
-            Column(modifier = Modifier.padding(start = 8.dp)) {
-                Text(text = drink.name, fontSize = 18.sp)
-                Spacer(modifier = Modifier.padding(top = 6.dp))
-                Text(
-                    text = drink.category?.categoryName ?: "",
-                    fontSize = 12.sp
-                )
+            Column {
+                MyLabel(text = drink.name)
+
+                MyDescription(text = drink.category?.categoryName ?: "")
             }
         }
-        Spacer(modifier = Modifier.padding(top = 12.dp))
         Divider(color = DrinkTheme.colors.onSurface)
     }
 }
@@ -101,21 +79,8 @@ private fun SearchItem(drink: Drink, onDrinkClicked: (Long) -> Unit) {
 @Composable
 private fun OutlinedRoundImage(url: String, description: String) {
     Image(
-        modifier = Modifier
-            .size(50.dp)
-            .border(
-                BorderStroke(
-                    1.dp,
-                    DrinkTheme.colors.onBackground
-                ), CircleShape
-            ),
-        painter = rememberImagePainter(
-            data = url,
-            builder = {
-                transformations(
-                    CircleCropTransformation()
-                )
-            }),
+        modifier = Modifier.size(50.dp),
+        painter = rememberImagePainter(data = url),
         contentDescription = description
     )
 }
